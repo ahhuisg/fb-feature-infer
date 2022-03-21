@@ -32,8 +32,7 @@ class ZooFeaturizer(ZooBase):
 
     def featurize(self, df):
         featured_df = self._featurize_df(df)
-        featured_df2 = self._process_stats(featured_df)
-        return self._feature_extraction(featured_df, featured_df2)
+        return self._feature_extraction(featured_df)
 
     def _summary_stats(self, dat, key_s):
         for col in key_s:

@@ -40,11 +40,8 @@ class ZooRandomForest(ZooBase):
         return self._best_model.score(x, y)
 
     def _preprocess(self, x, y=None):
-        x_1 = self._process_stats(x)
-        x_2 = self._feature_extraction(x, x_1)
-
-        x_new = x_2.reset_index(drop=True)
-        x_new = x_new.values
+        x_new = self._feature_extraction(x)
+        #x_new = x_2.values
 
         y_new = None
         if y is not None:

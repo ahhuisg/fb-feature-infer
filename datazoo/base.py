@@ -7,7 +7,7 @@ class ZooBase(object):
     def __init__(self):
         self.vectorizer = CountVectorizer(ngram_range=(2, 2), analyzer='char')
 
-    def _process_stats(self, data):
+    def _feature_extraction(self, data):
         data1 = data[['total_vals', 'num_nans', '%_nans', 'num_of_dist_val', '%_dist_val', 'mean', 'std_dev', 'min_val',
                       'max_val', 'has_delimiters', 'has_url', 'has_email', 'has_date', 'mean_word_count',
                       'stdev_word_count', 'mean_stopword_total', 'stdev_stopword_total',
@@ -17,9 +17,6 @@ class ZooBase(object):
         data1 = data1.reset_index(drop=True)
         data1 = data1.fillna(0)
 
-        return data1
-
-    def _feature_extraction(self, data, data1):
         arr = data['Attribute_name'].values
         arr = [str(x) for x in arr]
 
