@@ -30,7 +30,7 @@ fe = joblib.load(fe_path)
 
 column_names = model.fe_columns
 column_names.insert(0, "Column Name")
-column_names.insert(1, "Column Type")
+column_names.insert(1, "Predicted Column Type")
 
 
 @app.route("/")
@@ -58,4 +58,4 @@ def upload_file():
     return render_template("index.html", column_names=column_names, items=items)
 
 if __name__ == '__main__':
-   app.run(host="0.0.0.0", port=5001, debug=True)
+   app.run(host="0.0.0.0", port=5001, debug=False)
