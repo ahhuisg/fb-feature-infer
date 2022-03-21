@@ -4,4 +4,4 @@ __pycache__/
 *.bak
 *.txt.txt
 *.pkl
-*.joblib
+*.DS_Store

@@ -6,14 +6,15 @@ from logzero import logger
 class ZooBase(object):
     def __init__(self):
         self.vectorizer = CountVectorizer(ngram_range=(2, 2), analyzer='char')
-
-    def _feature_extraction(self, data):
-        data1 = data[['total_vals', 'num_nans', '%_nans', 'num_of_dist_val', '%_dist_val', 'mean', 'std_dev', 'min_val',
+        self.fe_columns = ['total_vals', 'num_nans', '%_nans', 'num_of_dist_val', '%_dist_val', 'mean', 'std_dev', 'min_val',
                       'max_val', 'has_delimiters', 'has_url', 'has_email', 'has_date', 'mean_word_count',
                       'stdev_word_count', 'mean_stopword_total', 'stdev_stopword_total',
                       'mean_char_count', 'stdev_char_count', 'mean_whitespace_count',
                       'stdev_whitespace_count', 'mean_delim_count', 'stdev_delim_count',
-                      'is_list', 'is_long_sentence']]
+                      'is_list', 'is_long_sentence']
+
+    def _feature_extraction(self, data):
+        data1 = data[self.fe_columns]
         data1 = data1.reset_index(drop=True)
         data1 = data1.fillna(0)
 
