@@ -5,3 +5,4 @@ nltk==3.7
 logzero==1.7.0
 jupyter==1.0.0
 flask==2.0.3
+shap==0.40.0

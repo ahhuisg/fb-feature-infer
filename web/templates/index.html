@@ -21,7 +21,8 @@
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" method="POST" action="/upload" enctype="multipart/form-data">
                 <div class="input-group">
                     <input class="form-control" type="file" name="file" aria-describedby="btnNavbarSearch" />
-                    <input type = "submit" class="btn btn-primary" id="btnNavbarSearch" value="Upload"/>
+                    <input type = "submit" class="btn btn-primary" name="btnNavbarSearch" value="Upload"/>
+                    <input type = "submit" class="btn btn-success" name="btnNavbarSearch" value="Upload with SHAP Values"/>
                 </div>
             </form>
             
@@ -43,7 +44,7 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">FeatureByte Dashboard</h1>
+                        <h1 class="mt-4">Type Inference</h1>
 
                         <div class="card mb-4">
                             <div class="card-header">
@@ -57,40 +58,6 @@
                                             {% for col_name in column_names %}
                                                 <th>{{col_name}}</th>
                                             {% endfor %}
-
-<!--                                             <th>Column Name</th>
-                                            <th>Column Type</th>
-
-                                            <th>total_vals</th>
-                                            <th>num_nans</th>
-                                            <th>%_nans</th>
-                                            <th>num_of_dist_val</th>
-                                            <th>%_dist_val</th>
-                                            <th>mean</th>
-                                            <th>std_dev</th>
-                                            <th>min_val</th>
-                                            <th>max_val</th>
-                                            <th>has_delimiters</th>
-                                            <th>has_url</th>
-                                            <th>has_email</th>
-                                            <th>has_date</th>
-
-                                            <th>mean_word_count</th>
-                                            <th>stdev_word_count</th>
-
-                                            <th>mean_stopword_total</th>
-                                            <th>stdev_stopword_total</th>
-
-                                            <th>mean_char_count</th>
-                                            <th>stdev_char_count</th>
-
-                                            <th>mean_whitespace_count</th>
-                                            <th>stdev_whitespace_count</th>
-
-                                            <th>mean_delim_count</th>
-                                            <th>stdev_delim_count</th>
-                                            <th>is_list</th>  
-                                            <th>is_long_sentence</th>     -->                                                                                    
                                         </tr>
                                     </thead>
                                     <tbody>

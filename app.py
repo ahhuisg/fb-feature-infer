@@ -3,7 +3,7 @@ import joblib
 
 from flask import Flask, render_template, request
 import pandas as pd
-
+import shap
 
 app = Flask(__name__,
             static_url_path='',
@@ -25,12 +25,16 @@ dict_int_label = {
 model_path = os.path.join(os.path.dirname(__file__), "artifacts", "model_rf.joblib")
 model = joblib.load(model_path)
 
+explainer = shap.TreeExplainer(model._best_model)
+
 fe_path = os.path.join(os.path.dirname(__file__), "artifacts", "featurizer.joblib")
 fe = joblib.load(fe_path)
 
 column_names = model.fe_columns
 column_names.insert(0, "Column Name")
 column_names.insert(1, "Predicted Column Type")
+column_names.insert(2, "Prediction Probability")
+column_names.append("attribute_name")
 
 
 @app.route("/")
@@ -40,22 +44,42 @@ def index():
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
+    #new_column_names = copy.deepcopy(column_names)
+
     items = []
     if request.method == 'POST':
+        shap_flag = False
+        if request.form['btnNavbarSearch'] == "Upload with SHAP Values":
+            shap_flag = True
+
         file = request.files["file"]
         df = pd.read_csv(file)
 
         attr_names = df.columns
         data_featurized = fe.featurize(df)
         y_rf = model.predict(data_featurized).tolist()
+        y_rf_probs = model.predict_proba(data_featurized).tolist()
 
         for ind, attr in enumerate(attr_names):
-            d = {'name': attr, 'type': dict_int_label[y_rf[ind]]}
-            f_dict = data_featurized.iloc[ind][:len(column_names)-2].to_dict()
+            percent = round(y_rf_probs[ind][y_rf[ind]], 3)
+            d = {'name': attr, 'type': dict_int_label[y_rf[ind]], 'prob': percent}
+            f_dict = data_featurized.iloc[ind][:25].to_dict()
+
+            if shap_flag:
+                all_shap_values = explainer.shap_values(data_featurized.iloc[ind], check_additivity=False)
+                shap_values = all_shap_values[y_rf[ind]][:25]
+                for i, key in enumerate(f_dict.keys()):
+                    f_dict[key] = f'{f_dict[key]} (SHAP Value: {shap_values[i]})'
+
+                f_dict['attribute_name'] = f'(SHAP Value: {sum(all_shap_values[y_rf[ind]][25:])})'
+            else:
+                f_dict['attribute_name'] = ""
+
             d.update(f_dict)
             items.append(d)
 
     return render_template("index.html", column_names=column_names, items=items)
 
+
 if __name__ == '__main__':
-   app.run(host="0.0.0.0", port=5001, debug=False)
+   app.run(host="0.0.0.0", port=5001, debug=True)

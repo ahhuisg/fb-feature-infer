@@ -34,6 +34,11 @@ class ZooRandomForest(ZooBase):
             x, _ = self._preprocess(x)
         return self._best_model.predict(x)
 
+    def predict_proba(self, x, training=False):
+        if training:
+            x, _ = self._preprocess(x)
+        return self._best_model.predict_proba(x)
+
     def score(self, x, y, training=False):
         if training:
             x, y = self._preprocess(x, y)
@@ -41,7 +46,6 @@ class ZooRandomForest(ZooBase):
 
     def _preprocess(self, x, y=None):
         x_new = self._feature_extraction(x)
-        #x_new = x_2.values
 
         y_new = None
         if y is not None:
